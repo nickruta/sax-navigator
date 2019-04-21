@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CS271 Project</title>
+  <link rel='stylesheet' href="{{ url_for('static', filename='resources/css/bootstrap.min.css') }}" >
+  <link rel='stylesheet' href="{{ url_for('static', filename='resources/css/font-awesome.min.css') }}" >
+  <link rel='stylesheet' href="{{ url_for('static', filename='resources/css/style.css') }}" >
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+
+  <div class="container">
+  <!-- <h1>Hierarchical Clustering for Time Series Analysis</h1> -->
+
+  <div id="heading" class="row">
+    <h2 id="header-hr" class="background">Visual Analytics</h2>
+    <h3 id="subheader">for Time Series Analysis</h3>
+  </div>
+
+
+<!--   <div id='graphDiv'></div>
+
+  <div id='image-div'></div> -->
+
+  <div id='dendrogram-display'></div>
+
+  <div id='cluster-container'>
+
+    <div id="heading-2" class="row">
+      <h2 id="header-hr-2" class="background-2">Cluster Display</h2>
+    </div>
+
+
+    <div id='cluster-display'></div>
+  </div>
+
+</div>
+
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<!-- load the d3.js library -->     
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<script
+  src="http://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+
+<script>
+
+
+
+
+
+    // $("button").click(function(){
+      // $.ajax({url: "demo_test.txt", success: function(result){
+      //   $("#div1").html(result);
+      // }});
+    // });
+
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+
+    //   $(function() {
+    // $('a#calculate').bind('click', function() {
+      $.getJSON($SCRIPT_ROOT + '/get_clusters', {
+        // a: $('input[name="a"]').val(),
+        // b: $('input[name="b"]').val()
+      }, function(data) {
+        // $("#result").text(data.result);
+
+        console.log(data)
+
+
+    // $('#image-div').prepend('<img id="image-1" src="static/sample_output1.png" />')
+    // $('#image-div').prepend('<img id="image-2" src="static/sample_output2.png" />')
+
+
+      });
+      // return false;
+  //   });
+  // });
+
+
+
+</script>
+
+<script type="text/javascript" src="{{url_for('static',filename='resources/js/ts_linechart.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='resources/js/dendrogram_tree.js')}}"></script>
+
+
+</body>
+</html>

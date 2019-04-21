@@ -1,0 +1,289 @@
+body {
+  font: 12px Arial;
+}
+path: not(.lineGraph) {
+  stroke-width: 2;
+  fill: none;
+}
+.axis path, .axis line {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.area {
+  fill: #F0F8FF;
+  stroke-width: 0;
+}
+
+#sidebar-format{
+    margin-top: 90px;
+}
+
+select {
+    width: 150px;
+    overflow: hidden;
+    white-space: pre;
+    text-overflow: ellipsis;
+}
+
+
+#image-1, #image-2 {
+  width: 70%;
+}
+
+/*header styles*/
+#subheader {
+    /*margin-left:150px;*/
+    color: steelblue;
+    padding: 0px 0px 0px 180px;
+    font-size: 22px;
+    line-height: 44px;
+    letter-spacing: -2px;
+    font-weight: bold;
+    text-align: center;
+}
+
+h3{
+    color: #f8f9fa;
+    /*text-align: center;*/
+    /*margin: 0 auto;*/
+    padding-left:30px;
+    padding-bottom: 20px;
+    font-size: 30px;
+    /*line-height: 44px;*/
+    letter-spacing: -2px;
+    font-weight: bold;
+}
+
+
+h2#header-hr {
+    position: relative;
+    z-index: 1;
+    color: #DAA520;
+    padding-left:30px;
+    padding-top:20px;
+    font-size: 52px;
+    line-height: 44px;
+    letter-spacing: -2px;
+    font-weight: bold;
+
+}
+
+h2 {
+    color: #444;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#heading {
+    margin-bottom: 20px;
+    display: block !important;
+}
+
+/*sub header style */
+#heading-2 {
+  margin-bottom: 5px;
+  margin-left: 30px;
+}
+h2#header-hr-2 {
+    position: relative;
+    z-index: 1;
+    color: #444;
+    /*margin: 0 auto;*/
+    padding: 0px 0px 0px 0px;
+    font-size: 32px;
+    line-height: 44px;
+    letter-spacing: -2px;
+    font-weight: bold;
+    text-align: center;
+    /*font-style: italic;*/
+}
+
+
+
+/*styles for line chart*/
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
+
+ /*styles for tree dendrogram*/
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+.node {
+  font: 10px sans-serif;
+}
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+/*dendrogram display container */
+#dendrogram-display {
+  margin-left: 200px;
+  margin-top: 150px;
+}
+
+#cluster-container {
+    margin-left: 200px;
+}
+
+#table-info{
+    margin-left: 200px;
+}
+
+/*styles for zoomable, collapsable, etc. tree*/
+.node {
+    cursor: pointer;
+  }
+
+  .overlay{
+      background-color:#EEE;
+  }
+   
+  .node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+  }
+   
+  .node text {
+    font-size:10px; 
+    font-family:sans-serif;
+  }
+   
+  .link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+  }
+
+  .templink {
+    fill: none;
+    stroke: red;
+    stroke-width: 3px;
+  }
+
+  .ghostCircle.show{
+      display:block;
+  }
+
+  .ghostCircle, .activeDrag .ghostCircle{
+       display: none;
+  }
+
+
+#tree-container {
+  padding-top: 10px;
+  margin: 0 auto !important;
+  text-align: center;
+    height: 50vh;
+}
+
+th {
+    text-align:center;
+    font-weight:bold !important;
+    border-top:1px solid #ddd;
+    border-left:1px solid #ddd;
+    border-bottom:1px solid #ddd;
+    border-right:1px solid #ddd;
+    height:25px;
+    padding-left:5px;
+    /*width: 50px;*/
+}
+
+td {
+    text-align:right;
+    border:1px solid #ddd;
+    /*width:30px !important;*/
+    height:25px;
+    padding-left:5px;
+}
+
+
+#button-search{
+    padding-left:15px;
+    padding-top:20px;
+}
+
+.nav-item p{
+    padding-left:15px;
+}
+
+
+/*Collapse Navigation bar*/
+.nav-collapse{
+    height: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+#descript{
+    text-align: justify;
+}
+
+.nav-descript{
+    font-size: 11px;
+    padding-left: 20px;
+    padding-top:10px;
+}
+
+.column {
+  float: left;
+  /*width: 50%;*/
+}
+
+.main-container:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+/*Buttons and DropDowns*/
+/*btn btn-sm btn-primary btn-custom*/
+.button-custom{
+    background-color: #343a40;
+    border:none;
+    color:white;
+    font-weight: bold;
+    border-radius: 4px;
+}
+.button-custom:hover {
+    background-color: #DAA520;
+}
+
+.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
+
+.dropdown button{
+    max-width: 100px !important;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+
+#main-collapse {
+    width: 70%;
+}
+
+#individual-view {
+    width: 30%;
+}
+
+#cluster-legend {
+}

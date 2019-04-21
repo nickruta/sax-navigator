@@ -1,0 +1,303 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>SAX Navigator</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/dashboard/">
+    <!-- <link rel='stylesheet' href="{{ url_for('static', filename='resources/css/bootstrap.min.css') }}" > -->
+    <link rel='stylesheet' href="{{ url_for('static', filename='resources/css/font-awesome.min.css') }}" >
+    <link rel='stylesheet' href="{{ url_for('static', filename='resources/css/style.css') }}" >
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+    <!-- Bootstrap core CSS -->
+<link href="{{ url_for('static', filename='resources/bootstrap-4.3.1/dist/css/bootstrap.min.css') }}" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='resources/css/dashboard.css') }}" rel="stylesheet">
+  </head>
+  <body>
+    <div class="containers nav-collapse"  id="topbar">
+<!--
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Star Explorer</a>
+-->
+        <div class="row bg-dark ">
+            <h2 id="header-hr">SAX Navigator</h2>
+        </div>
+        <div class="row bg-dark ">
+            <h3> Time Series Exploration Through Hierarchical Clustering </h3>
+        </div>
+
+        <div class="row bg-light " >
+            <div class="col-md-3 d-none d-md-block">
+                    <ul class="nav flex-column">
+                    <li class="nav-item">
+                    <a class="nav-link" id="descript">
+                        Welcome to SAX Navigator! This application will help you efficiently explore your time series data set.
+                        Zoom and pan across the tree below to explore the hierararchical structure of the clusters of your time seres.
+                        The heatmaps show the general shape of time series in that cluster.  The value next to the heatmap
+                        displays the number of observations at each node.
+                        Hover over a node in the tree to see details of each time series in that cluster in the Cluster Display.
+                        You can open and close branches to explore nodes further down the tree.
+                        The search features allows you to locate an individual obseravation via its name/id or allow
+                        you to find specific patterns created by clicking on the grid.
+
+                    <span class="sr-only">(current)</span>
+                    </a>
+                    </li>
+                    </ul>
+            </div>
+            <div class="col-md-2 d-none d-md-block">
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                <span>Search</span>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                <li class="nav-item">
+                    <a class="nav-link">
+                Name / ID
+                </a>
+                </li>
+                <li class="nav-item">
+<!--                <a class="nav-link dropdown" id="drop-search"></a>-->
+                    <div class = 'dropdown nav-link'>
+                        <button class="button-custom dropdown-toggle "
+                                type="button"
+                                id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select
+                        </button>
+                        <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton" id="drop-search">
+                        </div>
+                    </div>
+                </li>
+                </ul>
+            </div>
+            <div class="col-md-3 d-none d-md-block">
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <br>
+                    <a class="d-flex align-items-center text-muted" >
+                    </a>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            Pattern
+                        </a>
+                        <p class="nav-descript">
+                            Create a pattern of interest by clicking on the boxes in the grid. Press "Search" to see
+                            which observations contain that pattern.
+                        </p>
+                    </li>
+                    <div id="grid-search"></div>
+                    <div id="button-search">
+                        <input name="searchButton"
+                               type="button"
+                               value="Search"
+                               class="button-custom"
+                               onclick="gridsearch.prototype.buttonUpdate()" />
+                </ul>
+            </div>
+            <div class="col-md-4 d-none d-md-block">
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                <span>Legend</span>
+                <a class="d-flex align-items-center text-muted" >
+                </a>
+                </h6>
+                <ul class="nav flex-column mb-2">
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link">-->
+<!--                            Branch Thickness:-->
+<!--                        </a>-->
+<!--                        <div id="branch-legend"></div>-->
+<!--                    </li>-->
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            SAX Representation
+                        </a>
+                        <p class="nav-descript">
+                            The decomposition of the time series as letters "a,b,c, .." are derived via SAX
+                            <a href="https://cs.gmu.edu/~jessica/SAX_DAMI_preprint.pdf">(Lin et al. 2007).</a>
+                            The letter "a" corresponds to the lower values of each time series. For more information
+                            about the decomposition visit our paper (Section 3).
+
+                        </p>
+                        <div class="row">
+                            <div class="col" style='max-width: 50%'>
+                                <a class="nav-link">
+                                    Heatmap Color
+                                </a>
+                                <p class="nav-descript">
+                                    The values in each square of the heatmap grid represent the proportion of time series in the
+                                    respective cluster that have that SAX letter at each location.
+                                </p>
+                                <div id="heat-legend"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                        <div class="col">
+                                            <a class="nav-link">
+                                            Cluster Size
+                                            </a>
+                                            <p class="nav-descript">
+                                                The value in each node represents the size of the cluster. E.g. the cluster below would have
+                                                38 members. The tree does not create any additional children for clusters less than 30.
+                                            </p>
+                                        </div>
+                                        <div class="col" id='cluster-legend-col'>
+                                          <div id="cluster-legend"></div>
+                                        </div>
+                                      </div>
+                            </div>
+                          </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+<!--
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+-->
+<!--  <ul class="navbar-nav px-3">
+&lt;!&ndash;    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="#">Sign out</a>
+    </li>&ndash;&gt;
+  </ul>-->
+</div>
+    <button class="openbtn button-custom" id='collapse-navigation' onclick="navAction()" style="fill: #DAA520; padding-left:20px;">&#9776; Collapse Navigation</button>
+<div class="'main-container">
+<div class="container-fluid column" id="main-collapse">
+
+          <div id="tree-container" ></div>
+<!--          <div id='cluster-container'></div>-->
+      <!--</div>-->
+
+      <!--</div>-->
+
+      <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
+
+  </div>
+    <div id="individual-view" class="column">
+<!--        <div id="heading-2" class="row">-->
+<!--            <h2 id="header-hr-2" class="background-2">Cluster Display</h2>-->
+<!--        </div>-->
+        <div id='cluster-display'></div>
+        <div id="superposition"></div>
+        <div id="sparklines"></div>
+    </div>
+</div>
+
+<!--   <div id='graphDiv'></div>
+
+  <div id='image-div'></div> -->
+
+
+
+
+
+  <!-- <div id='dendrogram-display'></div> -->
+
+
+    </main>
+  </div>
+</div>
+
+
+<!-- load the d3.js library -->
+<!-- <script src="https://d3js.org/d3.v3.min.js"></script> -->
+<script src="{{url_for('static',filename='resources/js/d3.v3.min.js')}}"></script>
+
+<!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+<script src="{{url_for('static',filename='resources/js/d3.v4.min.js')}}"></script>
+<script src="{{url_for('static',filename='resources/js/d3.v5.min.js')}}"></script>
+
+<script
+  src="http://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous">
+</script>
+
+<script>
+
+
+
+
+
+    // $("button").click(function(){
+      // $.ajax({url: "demo_test.txt", success: function(result){
+      //   $("#div1").html(result);
+      // }});
+    // });
+
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+
+    //   $(function() {
+    // $('a#calculate').bind('click', function() {
+      $.getJSON($SCRIPT_ROOT + '/get_clusters', {
+        // a: $('input[name="a"]').val(),
+        // b: $('input[name="b"]').val()
+      }, function(data) {
+        // $("#result").text(data.result);
+
+        console.log(data)
+
+
+    // $('#image-div').prepend('<img id="image-1" src="static/sample_output1.png" />')
+    // $('#image-div').prepend('<img id="image-2" src="static/sample_output2.png" />')
+
+
+      });
+      // return false;
+  //   });
+  // });
+
+
+
+</script>
+    <script src="//d3js.org/queue.v1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="{{ url_for('static', filename='resources/bootstrap-4.3.1/dist/js/bootstrap.bundle.min.js') }}" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
+        <script type="text/javascript" src="{{url_for('static',filename='resources/js/dndTree.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static',filename='resources/js/heatmap.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static',filename='resources/js/individualView.js')}}"></script>
+
+
+        <script type="text/javascript" src="{{url_for('static',filename='resources/js/ts_linechart.js')}}"></script>
+        <!--<script type="text/javascript" src="{{url_for('static',filename='resources/js/dendrogram_tree.js')}}"></script>-->
+
+        
+        <!-- <script type="text/javascript" src="{{url_for('static',filename='resources/js/dendrogram_tree.js')}}"></script> -->
+
+        <!-- <script src="dashboard.js"></script></body> -->
+    <script type="text/javascript" src="{{url_for('static',filename='resources/js/dropDown.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static',filename='resources/js/gridSearch.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static',filename='resources/js/main.js')}}"></script>
+
+
+</html>
