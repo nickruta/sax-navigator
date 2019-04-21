@@ -1,6 +1,4 @@
 flask
 pandas
-scipy.cluster.hierarchy
-matplotlib.pyplot
 gunicorn
 django-heroku
