@@ -2,7 +2,7 @@
 import json
 
 from flask import Flask, render_template
-# import pandas as pd
+import pandas as pd
 from flask import jsonify
 
 # from scipy.cluster.hierarchy import dendrogram, linkage
