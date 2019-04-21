@@ -48,9 +48,6 @@ function drawTree(originalData) {
     // json_tree_data = "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_50.json"
     treeJSON = d3v3.json(json_tree_data, function(error, treeData) {
 
-    // for (i=0; i < treeData.children.length; i++) {
-    // }
-
     // Calculate total nodes, max label length
     var totalNodes = 0;
     var maxLabelLength = 0;
@@ -157,6 +154,8 @@ function drawTree(originalData) {
     // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
     var zoomListener = d3v3.behavior.zoom().scaleExtent([0.1, 3 ]).on("zoom", zoom);
 
+    // DRAG EVENT COMMENTED OUT FOR NOW
+
     // function initiateDrag(d, domNode) {
     //     draggingNode = d;
     //     d3v3.select(domNode).select('.ghostCircle').attr('pointer-events', 'none');
@@ -221,6 +220,7 @@ function drawTree(originalData) {
             }
         });
 
+  // ACTION EVENTS COMMENTED OUT FOR NOW
 
     // Define the drag listeners for drag/drop behaviour of nodes.
   //   dragListener = d3v3.behavior.drag()
@@ -388,6 +388,9 @@ function drawTree(originalData) {
 
         link.exit().remove();
     };
+
+
+    // CENTER NODE ACTION COMMENTED OUT FOR NOW
 
     // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
 
@@ -744,9 +747,6 @@ function drawTree(originalData) {
             .style("fill-opacity", 0);
         heatmaps.exit().remove();
 
-
-
-
         // CUSTOM CODE FOR REMOVING NODES CIRCLES OF LEAVES
         // selected = node.selectAll(".node circle")
         // selected.filter(function(d, i) {
@@ -819,22 +819,12 @@ function drawTree(originalData) {
             })
             .remove();
 
-
-
-
-
-
         // CUSTOM CODE FOR REMOVING LEAVES LINKS
         // links_selected = d3v4.selectAll("#tree-container svg g path.link")
         // links_selected.filter(function(d, i) {
         //     cluster_size = d.target.name.split('-').length
         //     return cluster_size < 2;
         // }).remove()
-
-
-
-
-
 
         // Stash the old positions for transition.
         nodes.forEach(function(d) {

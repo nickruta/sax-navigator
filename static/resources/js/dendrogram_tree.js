@@ -31,23 +31,16 @@ d3v3.json("static/resources/data/ts_atp_sax/atp_n6_size1.json", function(error, 
       .text(function(d) { return d.name; });
 
   node.each(function(d, i) {
-    // console.log(d + " " + i);
     addTSNode(d);
   });
 
   node.on("click", function(d){
-
-
     console.log(d.name)
     if(d.name == "Root") {
       d3v3.selectAll("#cluster-display svg").remove();
     } else {
       updateTSNodes(d)
     }
-
-            // d3v3.select(this).attr('r', 25)
-            //     .style("fill","lightcoral")
-            //     .style("stroke","red");
   });
 });
 d3v3.select(self.frameElement).style("height", height + "px");

@@ -2,11 +2,7 @@
 astronomy_ts_fnames_list = []
 $.ajax({url: "https://sax-navigator.herokuapp.com/get_ts_fnames", success: function(result){
   astronomy_ts_fnames_list = result;
-
-  // console.log(astronomy_ts_fnames_list.fnames_astronomy[0])
 }});
-
-
 
 function addTSNode(d, filename) {
 
@@ -14,9 +10,6 @@ function addTSNode(d, filename) {
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
     width = 150 - margin.left - margin.right,
     height = 150 - margin.top - margin.bottom;
-
-// parse the date / time
-// var parseTime = d3v4.timeParse("%d-%b-%y");
 
 // set the ranges
 var x = d3v4.scaleLinear().range([0, width]);
@@ -37,44 +30,38 @@ var svg = d3v4.select("#cluster-display").append("svg")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
-// Get the data
-d3v4.csv("static/resources/data/ts_astronomy_lightcurves_processed/" + filename, function(error, data) {
-  if (error) throw error;
+  // Get the data
+  d3v4.csv("static/resources/data/ts_astronomy_lightcurves_processed/" + filename, function(error, data) {
+    if (error) throw error;
 
-  // format the data
-  data.forEach(function(d) {
-      d.x = +d.x;
-      d.y = +d.y;
+    // format the data
+    data.forEach(function(d) {
+        d.x = +d.x;
+        d.y = +d.y;
+    });
+
+    // Scale the range of the data
+    x.domain(d3v4.extent(data, function(d) { return d.x; }));
+    y.domain(d3v4.extent(data, function(d) { return d.y; }));
+
+    // Add the valueline path.
+    svg.append("path")
+        .data([data])
+        .attr("class", "line")
+        .attr("d", valueline);
+
+    // Add the X Axis
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3v4.axisBottom(x).ticks(4));
+
+    // Add the Y Axis
+    svg.append("g")
+        .call(d3v4.axisLeft(y).ticks(4));
+
   });
 
-  // Scale the range of the data
-  x.domain(d3v4.extent(data, function(d) { return d.x; }));
-  y.domain(d3v4.extent(data, function(d) { return d.y; }));
-
-  // Add the valueline path.
-  svg.append("path")
-      .data([data])
-      .attr("class", "line")
-      .attr("d", valueline);
-
-  // Add the X Axis
-  svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3v4.axisBottom(x).ticks(4));
-
-  // Add the Y Axis
-  svg.append("g")
-      .call(d3v4.axisLeft(y).ticks(4));
-
-});
-
-
 }
-
-
-
-
-
 
 function updateTSNodes(d) {
 
@@ -87,23 +74,11 @@ function updateTSNodes(d) {
 
   ts_ids = d.name.split('-');
 
-  // for each (var id in ts_ids) {
-  //  // addTSNode(id)
+  ts_ids.forEach(function(element) {
 
-  //  console.log(id)
-  // }
-//drawMultiSeriesLineChart(ts_ids);
-ts_ids.forEach(function(element) {
-  // console.log("here is the element " + element);
-  //
-  // console.log("here is the element in the list " + astronomy_ts_fnames_list.fnames_astronomy[element])
-
-  filename = astronomy_ts_fnames_list.fnames_astronomy[element]
-  let id = filename.split('.')[0];
-  showIndividualView(element, filename, id);
-//  addTSNode(element, filename)
-});
-
-
+    filename = astronomy_ts_fnames_list.fnames_astronomy[element]
+    let id = filename.split('.')[0];
+    showIndividualView(element, filename, id);
+  });
 
 }
