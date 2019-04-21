@@ -20,7 +20,7 @@ def index():
 
 
 
-    return render_template("index.html", data=data)
+    # return render_template("index.html", data=data)
     return render_template("index.html")
 
 @app.route("/index_v1")
