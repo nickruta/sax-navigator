@@ -50,18 +50,20 @@
             <h3> Time Series Exploration Through Hierarchical Clustering </h3>
         </div>
 
+<!--        NAVIGATION BAR-->
         <div class="row bg-light " >
+
+<!--            DESCRIPTION-->
             <div class="col-md-3 d-none d-md-block">
                     <ul class="nav flex-column">
                     <li class="nav-item">
                     <a class="nav-link" id="descript">
                         Welcome to SAX Navigator! This application will help you efficiently explore your time series data set.
-                        Zoom and pan across the tree below to explore the hierararchical structure of the clusters of your time seres.
-                        The heatmaps show the general shape of time series in that cluster.  The value next to the heatmap
-                        displays the number of observations at each node.
+                        Zoom and pan across the tree below to explore the hierarchical structure of the clusters of your time seres.
+                        The heatmap shows the general shape of time series in that cluster.  The value displayed within the
+                        dark circle at each node shows how many observations are in that cluster.
                         Hover over a node in the tree to see details of each time series in that cluster in the Cluster Display.
-                        You can open and close branches to explore nodes further down the tree.
-                        The search features allows you to locate an individual obseravation via its name/id or allow
+                        The search features allows you to locate an individual observation via its name/id or allow
                         you to find specific patterns created by clicking on the grid.
 
                     <span class="sr-only">(current)</span>
@@ -69,6 +71,8 @@
                     </li>
                     </ul>
             </div>
+
+<!--            SEARCH TOOLS-->
             <div class="col-md-2 d-none d-md-block">
                 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                 <span>Search</span>
@@ -80,7 +84,6 @@
                 </a>
                 </li>
                 <li class="nav-item">
-<!--                <a class="nav-link dropdown" id="drop-search"></a>-->
                     <div class = 'dropdown nav-link'>
                         <button class="button-custom dropdown-toggle "
                                 type="button"
@@ -119,6 +122,7 @@
                                onclick="gridsearch.prototype.buttonUpdate()" />
                 </ul>
             </div>
+<!--            LEGEND -->
             <div class="col-md-4 d-none d-md-block">
                 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                 <span>Legend</span>
@@ -126,12 +130,6 @@
                 </a>
                 </h6>
                 <ul class="nav flex-column mb-2">
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link">-->
-<!--                            Branch Thickness:-->
-<!--                        </a>-->
-<!--                        <div id="branch-legend"></div>-->
-<!--                    </li>-->
                     <li class="nav-item">
                         <a class="nav-link">
                             SAX Representation
@@ -144,7 +142,7 @@
 
                         </p>
                         <div class="row">
-                            <div class="col" style='max-width: 50%'>
+                            <div class="col-sm-6">
                                 <a class="nav-link">
                                     Heatmap Color
                                 </a>
@@ -154,69 +152,38 @@
                                 </p>
                                 <div id="heat-legend"></div>
                                     </div>
-                                    <div class="col">
-                                        <div class="row">
-                                        <div class="col">
-                                            <a class="nav-link">
-                                            Cluster Size
-                                            </a>
-                                            <p class="nav-descript">
-                                                The value in each node represents the size of the cluster. E.g. the cluster below would have
-                                                38 members. The tree does not create any additional children for clusters less than 30.
-                                            </p>
-                                        </div>
-                                        <div class="col" id='cluster-legend-col'>
-                                          <div id="cluster-legend"></div>
-                                        </div>
-                                      </div>
+                            <div class="col-sm-6">
+                                <a class="nav-link">
+                                    Cluster Size
+                                </a>
+                                <p class="nav-descript">
+                                    The value in each node represents the size of the cluster. E.g. the cluster below would have
+                                    38 members.
+<!--                                The tree does not create any additional children for clusters less than 30.-->
+                                </p>
+<!--                                <div class="col" id='cluster-legend-col'>-->
+                                    <div id="cluster-legend"></div>
+<!--                                </div>-->
                             </div>
                           </div>
                     </li>
                 </ul>
             </div>
         </div>
-<!--
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
--->
-<!--  <ul class="navbar-nav px-3">
-&lt;!&ndash;    <li class="nav-item text-nowrap">
-      <a class="nav-link" href="#">Sign out</a>
-    </li>&ndash;&gt;
-  </ul>-->
 </div>
     <button class="openbtn button-custom" id='collapse-navigation' onclick="navAction()" style="fill: #DAA520; padding-left:20px;">&#9776; Collapse Navigation</button>
 <div class="'main-container">
 <div class="container-fluid column" id="main-collapse">
 
           <div id="tree-container" ></div>
-<!--          <div id='cluster-container'></div>-->
-      <!--</div>-->
-
-      <!--</div>-->
-
-      <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
-
   </div>
     <div id="individual-view" class="column">
-<!--        <div id="heading-2" class="row">-->
-<!--            <h2 id="header-hr-2" class="background-2">Cluster Display</h2>-->
-<!--        </div>-->
+
         <div id='cluster-display'></div>
         <div id="superposition"></div>
         <div id="sparklines"></div>
     </div>
 </div>
-
-<!--   <div id='graphDiv'></div>
-
-  <div id='image-div'></div> -->
-
-
-
-
-
-  <!-- <div id='dendrogram-display'></div> -->
-
 
     </main>
   </div>

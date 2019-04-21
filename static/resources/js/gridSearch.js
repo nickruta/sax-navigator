@@ -91,6 +91,8 @@ gridsearch.prototype.initVis = function(){
 gridsearch.prototype.wrangleData = function(d){
     var vis = this;
 
+
+    // Change all others in column to false (only one can be lit at a time
     vis.data.map(function(i){
         if(i[d.col].checked && i[d.col].row!=d.row){
             i[d.col].checked =false;
@@ -98,6 +100,7 @@ gridsearch.prototype.wrangleData = function(d){
         }
     });
 
+    // If square lit, un light If square not lit, light.
     if(vis.data[d.row][d.col].checked){
         vis.data[d.row][d.col].checked=false;
         vis.data[d.row][d.col].fill='#343a40';
@@ -107,6 +110,7 @@ gridsearch.prototype.wrangleData = function(d){
     }
 
 
+    // Transform grid clicks to regular expression
     regex='';
 
     for(var jj=0 ; jj<vis.size; jj++){
@@ -120,6 +124,7 @@ gridsearch.prototype.wrangleData = function(d){
     };
 
 
+    // Make sure the grid color transitions occur on click
     vis.svg.selectAll("rect")
         .style('fill', function(d) {
             return d.fill
@@ -138,7 +143,7 @@ gridsearch.prototype.wrangleData = function(d){
 gridsearch.prototype.updateVis = function(){
     var vis = this;
 
-
+// Create grid search in navbar
     vis.row = vis.svg.selectAll(".row")
         .data(vis.data)
         .enter().append("g")
@@ -176,20 +181,20 @@ gridsearch.prototype.updateVis = function(){
 
 };
 
+
 gridsearch.prototype.buttonUpdate=function(){
 
+    // When Search is clicked, ID
     var pattern = new RegExp(regex + '+');
-    console.log(pattern);
+    // console.log(pattern);
 
     searchID=[];
     for(ii=0 ; ii< saxWords.length ; ii++){
         if(pattern.test(saxWords[ii].sax)){
-            if(saxWords[ii].id_tree<100){
                 searchID.push(saxWords[ii].id_tree);
-            }
         }
     };
 
-    console.log(searchID);
+    // console.log(searchID);
     hightlightPath(searchID)
 };

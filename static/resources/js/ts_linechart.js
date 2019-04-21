@@ -1,6 +1,7 @@
 // get the file names for our raw time series
 astronomy_ts_fnames_list = []
 $.ajax({url: "https://sax-navigator.herokuapp.com/get_ts_fnames", success: function(result){
+  console.log(result)
   astronomy_ts_fnames_list = result;
 
   // console.log(astronomy_ts_fnames_list.fnames_astronomy[0])

@@ -34,15 +34,16 @@ let line_ML = d3v4.line()
 
 d3v4.csv("static/resources/data/metadata/ts_astronomy_metadata2.csv", function(data) {
     let mdata = {};
-    data.forEach(function(e) {
-        let id = e.id;
-        let tmp = {};
-        for (let key in e) {
-            if (key.indexOf('id') === -1) {
-                tmp[key] = e[key];
-            }
-        }
-        mdata[id] = tmp;
+    data.forEach(function(d) {
+        let id = d.id;
+        // let tmp = {};
+        // for (let key in d) {
+        //     tmp[key] = d[key];
+        //     if (key.indexOf('id') === -1) {
+        //         tmp[key] = d[key];
+        //     }
+        // }
+        mdata[id] = d;//tmp;
     });
     metadata = mdata;
     metaList = data.columns.filter(function(e) {
@@ -162,20 +163,25 @@ function showIndividualView(d, filename, id) {
             .append("td")
             .style('height', '43px')
             .text(function(d, i) { return d; })
-            .on("mouseover", mouseover);
+            .on("mouseover", mouseoverRow)
+            .on('click', mouseclickRow);
             // .on('click', );
 
         // add a sparkline to the table
         let trows_line = tbody_line.append('tr')
             .attr('class', 'id' + id + ' metadataTable');
+        // add ids to table
         trows_line.append('td')
             .style('height', '43px')
             .text(id)
-            .on("mouseover", mouseover);
+            .on("mouseover", mouseoverRow)
+            .on('click', mouseclickRow);
+        // add sparklines to table
         trows_line.append('td')
             .attr('class', 'graph')
             .style('height', '43px')
-            .on("mouseover", mouseover)
+            .on("mouseover", mouseoverRow)
+            .on('click', mouseclickRow)
             .each(lines);
 //        let GraphID = ['', 'ID/Name'];
 //        let trows_line = tbody_line.append('tr')
@@ -191,7 +197,16 @@ function showIndividualView(d, filename, id) {
 //            .attr("class", "graph")
 //            .each(lines);
 
-        function mouseover(d) {
+        function mouseclickRow() {
+            let selectedID = this.parentNode.getAttribute('class').split(' ')[0].slice(2);
+            hightlightPath([metadata[selectedID].id_tree]);
+            d3v4.selectAll('tr.metadataTable')
+                .style('border', '1px solid #ddd');
+            d3v4.selectAll('tr.metadataTable.' + 'id' + selectedID)
+                .style('border', '2px solid #DAA520');
+        }
+
+        function mouseoverRow(d) {
             let selectedID = this.parentNode.getAttribute('class').split(' ')[0];
             d3v4.selectAll('tr.metadataTable')
                 .style('background', '#fff');

@@ -35,6 +35,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
 saxArray=[];
 maxTree=[];
 let origin = {};
+let baseSVGDragFlg = false;
 const initScale = 0.51;
 d3v4.csv("static/resources/data/ts_astronomy_sax/atp_n4_size1.csv", function(error, list) {
     saxArray=list;
@@ -43,8 +44,8 @@ d3v4.csv("static/resources/data/ts_astronomy_sax/atp_n4_size1.csv", function(err
 
 function drawTree(originalData) {
 
-    // json_tree_data = "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_binary_complete_500.json"
-    json_tree_data = "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_50.json"
+    json_tree_data = "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_binary_complete_500.json"
+    // json_tree_data = "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_50.json"
     treeJSON = d3v3.json(json_tree_data, function(error, treeData) {
 
     // for (i=0; i < treeData.children.length; i++) {
@@ -204,7 +205,21 @@ function drawTree(originalData) {
         .attr("width", viewerWidth)
         .attr("height", viewerHeight)
         .attr("class", "overlay")
-        .call(zoomListener);
+        .call(zoomListener)
+        .on('mousedown', function () {
+            baseSVGDragFlg = false;
+        })
+        .on('mousemove', function () {
+            baseSVGDragFlg = true;
+        })
+        .on('mouseup', function () {
+            if (!baseSVGDragFlg) {
+                d3v3.selectAll(".link")
+                    .style("stroke", "#ccc");
+                d3v3.selectAll('tr.metadataTable')
+                    .style('border', '1px solid #ddd');
+            }
+        });
 
 
     // Define the drag listeners for drag/drop behaviour of nodes.
@@ -865,7 +880,13 @@ function drawTree(originalData) {
 
     // Layout the tree initially and center on the root node.
     svgGroup.attr('transform', function(d) {
-        return 'translate(' + 44 + ',-661) scale(' + initScale + ')';
+
+        // looks good for "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_50.json"  
+        // return 'translate(' + 44 + ',-661) scale(' + initScale + ')';
+
+        initScaleSize = 0.20
+        // looks good for "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_binary_complete_500.json"
+        return 'translate(' + 144 + ',-2133) scale(' + initScaleSize + ')';
     });
     update(root);
     // centerNode(root);

@@ -21,6 +21,7 @@ function loadData(error,names) {
     // console.log(error);
     nameID = names;
 
+    // Sort Names /IDS in alphabetical order
     nameID.sort(function(a,b){
         if(a.name.toLowerCase() < b.name.toLowerCase()){
             return -1;
@@ -37,6 +38,8 @@ function loadData(error,names) {
     var n=0;
     var id_tree;
 
+
+    // Create string of letters for each observation, match with tree ID
     for(ii=0 ; ii<saxArray.length ; ii++) {
         var saxregex= '';
         for(jj=0; jj<(Object.keys(saxArray[ii]).length-1); jj++){
@@ -56,11 +59,12 @@ function loadData(error,names) {
                 break;
             }
         }
-        saxWords.push({
-            id : saxArray[ii].id,
-            sax : saxregex,
-            id_tree: ''+id_tree
-        });
+            saxWords.push({
+                id : saxArray[ii].id,
+                sax : saxregex,
+                id_tree: ''+id_tree
+            });
+
     }
 
     createVis();
@@ -80,6 +84,7 @@ function createVis() {
 
 }
 
+// Collapse the navigation bar actions
 function navAction(){
     $('#topbar').slideToggle('normal', resizeTable);
     if(collapse){
@@ -104,6 +109,8 @@ function navAction(){
     }
 }
 
+
+// Draw the legend for the heatmap and the cluster size
 function legendDraw(){
 
     let legWidth = Math.min($("#heat-legend").width(),300);
@@ -123,7 +130,7 @@ function legendDraw(){
     heat_legend =  new Array();
     for(ii=0 ; ii<x.length; ii++){
         heat_legend.push({
-            x: (gridSize+10)*(ii+1) ,
+            x: (gridSize+5)*(ii+1) ,
             y: 0,
             width: gridSize,
             height: gridSize,
@@ -156,6 +163,7 @@ function legendDraw(){
         .attr("y", function(d) { return (d.y+gridSize*3/2); })
         .attr("text-anchor","middle")
         .attr("alignment-baseline","middle")
+        .attr("font-size","10")
         .text(function(d) {return d.label;});
 
     //// Cluster Number Legend
@@ -166,17 +174,18 @@ function legendDraw(){
         .attr("height", radWidth);
 
     circleEx.append("circle")
-        .attr("cx", gridSize*2)
+        .attr("cx", gridSize*1.5)
         .attr("cy", radWidth/2)
-        .attr("r", radWidth/2)
+        .attr("r", radWidth/3)
         .attr('fill',"#343a40");
 
     circleEx.append("text")
-        .attr("x", gridSize*2)
+        .attr("x", gridSize*1.5)
         .attr("y", radWidth/2)
         .attr("fill","#F0F8FF")
         .attr("alignment-baseline","middle")
         .attr("text-anchor","middle")
+        .attr("font-size","12")
         .text("38");
 
 
