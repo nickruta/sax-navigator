@@ -13,14 +13,15 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    df = pd.read_csv('data/sample_data/sample_time_series_data.csv').drop('Open', axis=1)
-    chart_data = df.to_dict(orient='records')
-    chart_data = json.dumps(chart_data, indent=2)
-    data = {'chart_data': chart_data}
+    # df = pd.read_csv('data/sample_data/sample_time_series_data.csv').drop('Open', axis=1)
+    # chart_data = df.to_dict(orient='records')
+    # chart_data = json.dumps(chart_data, indent=2)
+    # data = {'chart_data': chart_data}
 
 
 
     return render_template("index.html", data=data)
+    return render_template("index.html")
 
 @app.route("/index_v1")
 def index_v1():
