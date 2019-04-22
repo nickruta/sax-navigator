@@ -1,6 +1,6 @@
 // get the file names for our raw time series
 astronomy_ts_fnames_list = []
-$.ajax({url: "https://sax-navigator.herokuapp.com/get_ts_fnames", success: function(result){
+$.ajax({url: "http://127.0.0.1:5000/get_ts_fnames", success: function(result){
   astronomy_ts_fnames_list = result;
 }});
 
@@ -72,11 +72,19 @@ function updateTSNodes(d) {
 
   setTables();
 
+    astronomy_ts_fnames_list.fnames_astronomy.sort(function(a,b){
+        if(a < b){
+            return -1;
+        }else{
+            return 1;
+        }
+    });
+    console.log(astronomy_ts_fnames_list);
+
   ts_ids = d.name.split('-');
 
   ts_ids.forEach(function(element) {
-
-    filename = astronomy_ts_fnames_list.fnames_astronomy[element]
+    filename = astronomy_ts_fnames_list.fnames_astronomy[element];
     let id = filename.split('.')[0];
     showIndividualView(element, filename, id);
   });

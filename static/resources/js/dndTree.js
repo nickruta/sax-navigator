@@ -36,15 +36,18 @@ saxArray=[];
 maxTree=[];
 let origin = {};
 let baseSVGDragFlg = false;
-const initScale = 0.51;
+let initScale = 0.51;
+let threshold = 1;
 d3v4.csv("static/resources/data/ts_astronomy_sax/atp_n4_size1.csv", function(error, list) {
     saxArray=list;
+    threshold = saxArray.length * 0.02;
     drawTree(list);
 });
 
+
 function drawTree(originalData) {
 
-    json_tree_data = "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_binary_complete_500.json"
+    json_tree_data = "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_binary_complete_2000.json"
     // json_tree_data = "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_50.json"
     treeJSON = d3v3.json(json_tree_data, function(error, treeData) {
 
@@ -440,14 +443,44 @@ function drawTree(originalData) {
             updateTSNodes(d)
         }
     }
+    
+    function searchChildren(d) {
+        if ('children' in d || '_children' in d) {
+            if ('_children' in d) {
+                d.children = d._children;
+                d._children = null;
+            }
+            if (d.children.length < 2) {
+                searchChildren(d.children[0]);
+            } else {
+                let clusterSize1 = d.children[0].name.split('-').length,
+                    clusterSize2 = d.children[1].name.split('-').length;
+                if (clusterSize1 < threshold && clusterSize2 < threshold) {
+                    d._children = d.children;
+                    d.children = null;
+                } else if (clusterSize1 < threshold) {
+                    d.children[0]._children = d.children[0].children;
+                    d.children[0].children = null;
+                    searchChildren(d.children[1]);
+                } else if (clusterSize2 < threshold) {
+                    d.children[1]._children = d.children[1].children;
+                    d.children[1].children = null;
+                    searchChildren(d.children[0]);
+                } else {
+                    searchChildren(d.children[0]);
+                    searchChildren(d.children[1]);
+                }
+            }
+        }
+    }
 
     function update(source) {
         // Compute the new height, function counts total children of root node and sets tree height accordingly.
         // This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
         // This makes the layout more consistent.
+        searchChildren(root);
         var levelWidth = [1];
         var childCount = function(level, n) {
-
             if (n.children && n.children.length > 0) {
                 if (levelWidth.length <= level + 1) levelWidth.push(0);
 
@@ -458,13 +491,24 @@ function drawTree(originalData) {
             }
         };
         childCount(0, root);
-        var newHeight = d3v3.max(levelWidth) * 150; // 25 pixels per line  
-        tree = tree.size([newHeight, viewerWidth]);
+        var newHeight = d3v3.max(levelWidth) * 150; // 25 pixels per line
+        // Layout the tree initially and center on the root node.
+        svgGroup.attr('transform', function(d) {
 
+            // looks good for "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_50.json"
+            // return 'translate(' + 44 + ',-661) scale(' + initScale + ')';
+
+            initScale = viewerHeight / newHeight;//0.30;
+            // looks good for "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_binary_complete_500.json"
+            return 'translate(' + 144 + ',' + newHeight / 2 +') scale(' + initScale + ')';
+        });
+        let heatmapWidth = 210,
+            heatmapHeight = 84;
+        tree = tree.size([newHeight, viewerWidth]);
+        tree = tree.nodeSize([heatmapHeight, 0]);
         // Compute the new tree layout.
         var nodes = tree.nodes(root).reverse();
         var links = tree.links(nodes);
-        let heatmapWidth = 210;
 //        for (let i = 0; i < nodes.length; i++) {
 //            nodes[i].y += heatmapWidth * nodes[i].depth;
 //        }
@@ -494,14 +538,22 @@ function drawTree(originalData) {
             // Normalize for fixed-depth by commenting out below line
             d.y = (d.depth * 200); //500px per level.
         });
-
+        // let trimmedNodes = nodes.map(function (d) {
+        //     let clusterSize = d.name.split('-').length;
+        //     if (d.name.indexOf('Root') >= 0 || clusterSize >= threshold || d.parent.name.split('-').length - clusterSize >= threshold) {
+        //         return d;
+        //     } else {
+        //         d._children = d.children;
+        //         d.children = null;
+        //         return d;
+        //     }
+        // });
         let props = $('.treeGroup').css('transform'); 
         let vals = props.split('(')[1];
         vals = vals.split(')')[0];
         vals = vals.split(',');
         origin.x = Number(vals[vals.length - 2]);
         origin.y = Number(vals[vals.length - 1]);
-
         // Update the nodes…
         node = svgGroup.selectAll("g.node")
             .data(nodes, function(d) {
@@ -868,16 +920,6 @@ function drawTree(originalData) {
     root.x0 = viewerHeight / 2;
     root.y0 = 0;
 
-    // Layout the tree initially and center on the root node.
-    svgGroup.attr('transform', function(d) {
-
-        // looks good for "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_50.json"  
-        // return 'translate(' + 44 + ',-661) scale(' + initScale + ')';
-
-        initScaleSize = 0.20
-        // looks good for "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_binary_complete_500.json"
-        return 'translate(' + 144 + ',-2133) scale(' + initScaleSize + ')';
-    });
     update(root);
     // centerNode(root);
 
