@@ -500,7 +500,11 @@ function drawTree(originalData) {
 
             initScale = viewerHeight / newHeight;//0.30;
             // looks good for "static/resources/data/ts_astronomy_sax/astronomy_n4_size1_binary_complete_500.json"
-            return 'translate(' + 144 + ',' + newHeight / 2 +') scale(' + initScale + ')';
+            // return 'translate(' + 144 + ',' + newHeight / 2 +') scale(' + initScale + ')';
+
+            return 'translate(' + 96 + ',' + 600 / 2 +') scale(' + initScale + ')';
+
+            // 96 401 0.2
         });
         let heatmapWidth = 210,
             heatmapHeight = 84;
