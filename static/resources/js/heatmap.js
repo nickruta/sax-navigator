@@ -95,7 +95,7 @@ function drawHeatmap(id, data, countData, n) {//}, size, xItems, yItems) {
         .text(function(d) {return d;})
         .attr('x', -3)
         .attr('y', function(d, i) {return height - (i * gridSize + gridSize / 4);})
-        .style('text-anchor', 'end')
+        .style('text-anchor', 'end');
 //        .attr('transform', 'translate(-6,0)');// + gridSize / 1.5 + ')');
 //    heatmap.append('g')
 //        .call(d3v5.axisLeft(y).tickSize(0))
@@ -144,7 +144,7 @@ function drawHeatmap(id, data, countData, n) {//}, size, xItems, yItems) {
 //        .on('mouseover', mouseover)
 //        .on('mousemove', mousemove)
 //        .on('mouseleave', mouseleave)
-        .on('click', clickHeatmapCell);
+        .on('click', clickHeatmap);
 
     // interactions
     // mouseover: show tooltip
@@ -164,6 +164,70 @@ function drawHeatmap(id, data, countData, n) {//}, size, xItems, yItems) {
     }
     function mouseleave() {
         tooltip.style('opacity', 0);
+    }
+    function clickHeatmap(d) {
+        if (svg.selectAll('.lineGraph')._groups[0].length > 0) {
+            svg.selectAll('.lineGraph')
+                .remove();
+        } else {
+            svg.selectAll('.lineGraph')
+                .remove();
+            let points = [];
+            let yRange = d3v5.scaleLinear()
+                .domain([1 - 0.5, n + 0.5])
+                .range([height, 0]);
+            for (let i = 0; i < size; i++) {
+                let ave = 0;
+                let vari = 0;
+                for (let j = 0; j < data.length; j++) {
+                    if (data[j]['V' + (i + 1)] !== 'NA')
+                        ave += Number(data[j]['V' + (i + 1)]);
+                }
+                ave /= data.length;
+                for (let j = 0; j < data.length; j++) {
+                    if (data[j]['V' + (i + 1)] !== 'NA')
+                        vari += Math.pow(Number(data[j]['V' + (i + 1)]) - ave, 2);
+                }
+                vari /= data.length;
+                vari = Math.sqrt(vari);
+                points.push(['V' + (i + 1), ave, vari]);
+            }
+            svg.append('path')
+                .datum(points)
+                .attr('class', 'lineGraph')
+                .attr('fill', "orange")
+                .attr('stroke', 'none')
+                .attr('opacity', 0.4)
+                .attr('d', d3v5.area()
+                    .x(function (d) {
+                        return x(d[0]);
+                    })
+                    .y0(function (d) {
+                        return yRange(d[1] - d[2]);
+                    })
+                    .y1(function (d) {
+                        return yRange(d[1] + d[2]);
+                    })
+                    .curve(d3v5.curveCatmullRom)
+                )
+                .attr('transform', 'translate(' + (gridSize / 2) + ',' + 0 + ')');
+            svg.append('path')
+                .datum(points)
+                .attr('class', 'lineGraph')
+                .attr('fill', 'none')
+                .attr('stroke', 'darkslateblue')
+                .attr('stroke-width', 1)
+                .attr('d', d3v5.line()
+                    .x(function (d) {
+                        return x(d[0]);
+                    })
+                    .y(function (d) {
+                        return yRange(d[1]);
+                    })
+                    .curve(d3v5.curveCatmullRom)
+                )
+                .attr('transform', 'translate(' + (gridSize / 2) + ',' + 0 + ')');
+        }
     }
     function clickHeatmapCell(d) {
         if (d3v5.select(this).attr('class').indexOf('selectedCell') >= 0) {

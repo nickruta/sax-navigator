@@ -53,17 +53,14 @@ d3v4.csv("static/resources/data/metadata/ts_astronomy_metadata2.csv", function(d
 
 function setTables() {
     let individualWidth = $('#individual-view').width();
-    let individualHeight = window.innerHeight - $('#superposition').height() - $('#collapse-navigation').height() + 'px';
-    if (!collapse) {
-        // individualHeight -= $('.nav-collapse').height();
-        individualHeight = '60vh';
-    }
+    let individualHeight = $('#tree-container').height() - $('#superposition').height() - $('#collapse-navigation').height() - $('#set-max-cluster-size').height() + 'px';
     // let individualWidth = $('#individual-view').width();
     // let individualHeight = window.innerHeight - $('.nav-collapse').height() - height_ML;
     let sparklineArea = document.getElementById('sparklines');
     let scrollWidth = sparklineArea.offsetWidth - sparklineArea.clientWidth;
     d3v4.select('#sparklines')
-        .style('overflow', 'scroll')
+        .style('overflow-y', 'scroll')
+        .style('overflow-x', 'hidden')
         .style('white-space', 'nowrap')
         .style('width', individualWidth + 'px')
         .style('height', individualHeight);
@@ -111,11 +108,8 @@ function setTables() {
 
 function resizeTable() {
     let individualWidth = $('#individual-view').width();
-    let individualHeight = window.innerHeight - $('#superposition').height() - $('#collapse-navigation').height() + 'px';
-    if (!collapse) {
-        // individualHeight -= $('.nav-collapse').height();
-        individualHeight = '60vh';
-    }
+    let individualHeight = $('#tree-container').height() - $('#superposition').height() - $('#collapse-navigation').height() - $('#set-max-cluster-size').height() + 'px';
+
     d3v4.select('#sparklines')
         .style('width', individualWidth + 'px')
         .style('height', individualHeight);

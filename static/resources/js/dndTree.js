@@ -38,6 +38,7 @@ let origin = {};
 let baseSVGDragFlg = false;
 let initScale = 0.51;
 let threshold = 1;
+let maxClusterSize = 100;
 d3v4.csv("static/resources/data/ts_astronomy_sax/atp_n4_size1.csv", function(error, list) {
     saxArray=list;
     threshold = saxArray.length * 0.02;
@@ -156,7 +157,15 @@ function drawTree(originalData) {
 
     // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
     var zoomListener = d3v3.behavior.zoom().scaleExtent([0.1, 3 ]).on("zoom", zoom);
-
+    let filteringBtn = document.getElementById('filter-cluster-size-btn');
+    filteringBtn.addEventListener('click', function (ev) {
+        threshold = Number(document.getElementById('filter-cluster-size-input').value);
+        update(root);
+    });
+    let maxSizeBtn = document.getElementById('set-max-cluster-size-btn');
+    maxSizeBtn.addEventListener('click', function (ev) {
+       maxClusterSize = Number(document.getElementById('set-max-cluster-size-input').value);
+    });
     // DRAG EVENT COMMENTED OUT FOR NOW
 
     // function initiateDrag(d, domNode) {
@@ -440,16 +449,13 @@ function drawTree(originalData) {
         if(d.name == "Root1") {
             d3v3.selectAll("#cluster-display svg").remove();
         } else {
-            updateTSNodes(d)
+            if (d.name.split('-').length < maxClusterSize)
+                updateTSNodes(d);
         }
     }
     
     function searchChildren(d) {
-        if ('children' in d || '_children' in d) {
-            if ('_children' in d) {
-                d.children = d._children;
-                d._children = null;
-            }
+        if ('children' in d) {
             if (d.children.length < 2) {
                 searchChildren(d.children[0]);
             } else {
@@ -474,10 +480,25 @@ function drawTree(originalData) {
         }
     }
 
+    function clearRoot(d) {
+        if ('_children' in d) {
+            if (d._children !== null) {
+                d.children = d._children;
+                d._children = null;
+            }
+        }
+        for (let i = 0; i < d.children.length; i++) {
+            clearRoot(d.children[i]);
+        }
+    }
+
     function update(source) {
         // Compute the new height, function counts total children of root node and sets tree height accordingly.
         // This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
         // This makes the layout more consistent.
+        document.getElementById('current-cluster-size').innerText = 'Minimum cluster size: ' + threshold;
+        document.getElementById('set-max-cluster-size-input').value = String(maxClusterSize);
+        clearRoot(root);
         searchChildren(root);
         var levelWidth = [1];
         var childCount = function(level, n) {
@@ -503,8 +524,6 @@ function drawTree(originalData) {
             // return 'translate(' + 144 + ',' + newHeight / 2 +') scale(' + initScale + ')';
 
             return 'translate(' + 96 + ',' + 600 / 2 +') scale(' + initScale + ')';
-
-            // 96 401 0.2
         });
         let heatmapWidth = 210,
             heatmapHeight = 84;
@@ -534,24 +553,10 @@ function drawTree(originalData) {
         // Set widths between levels based on maxLabelLength.
         nodes.forEach(function(d, i) {
             // d.y = (d.depth * (maxLabelLength * 14)); //maxLabelLength * 10px
-//            if (d.name.indexOf('Root') >= 0) {
-//                origin.x = d.x;
-//                origin.y = d.y;
-//            }
             // alternatively to keep a fixed scale one can set a fixed depth per level
             // Normalize for fixed-depth by commenting out below line
             d.y = (d.depth * 200); //500px per level.
         });
-        // let trimmedNodes = nodes.map(function (d) {
-        //     let clusterSize = d.name.split('-').length;
-        //     if (d.name.indexOf('Root') >= 0 || clusterSize >= threshold || d.parent.name.split('-').length - clusterSize >= threshold) {
-        //         return d;
-        //     } else {
-        //         d._children = d.children;
-        //         d.children = null;
-        //         return d;
-        //     }
-        // });
         let props = $('.treeGroup').css('transform'); 
         let vals = props.split('(')[1];
         vals = vals.split(')')[0];
@@ -587,81 +592,24 @@ function drawTree(originalData) {
                 }
             });
         // this section places the heatmaps near their respective nodes
-        let heatmaps = svgGroup.selectAll('g.heatmap-node')
-            // .data(nodes, function(d) {
-            //     return d.id || (d.id = ++i);
-            // });
-            .data(nodes.filter(function(d) {
-                let names = d.name.split('-');
-                return names.length > 1;
-            }));
-        heatmaps
-            .enter()
-            .append('g')
-            .attr('id', function (d) { return "heatmap-node-" + d.id; })
-            .attr('class', 'heatmap-obj')
-//            .attr("pointer-events", "none")
-            .each(heatmap);
-
+        let heatmapData = nodes.filter(function(d) {
+            let names = d.name.split('-');
+            return names.length > 1;
+        });
+        let heatmaps;
+        // the number of nodes will increase
+        if (d3v3.selectAll('.heatmap-obj')[0].length < heatmapData.length) {
+            appendHeatmap();
+            updateHeatmap();
+        } else {
+            removeHeatmap();
+            updateHeatmap();
+        }
         // move to origin (the center of heatmap area = position of root)
         heatmaps
             .attr("transform", function(d) {
-                let heatmapHeight = d3v4.select('#heatmap-node-' + d.id).node().getBBox().height;
                 return "translate(" + (origin.x - heatmapHeight / 2 - 10) + ")";
             });
-//        nodeEnter.append('svg')
-//            .attr('class', 'heatmap-obj')
-//            .attr('id', function (d) { return "heatmap-node-" + d.id; })
-//            .attr("y", source.y)
-//            .attr("x", function(d) {
-//                var selected = d3v4.select(this.parentNode).select(".nodeCircle")._groups[0][0]
-//                let div = document.getElementsByClassName(d.id);
-//
-//                let data = [];
-//
-//                if (d.id < nodes.length) {
-//                    let nodeName = nodes[d.id].name;
-//                    if (nodeName.indexOf('Root') === -1 && nodes[d.id].name.length > 1) {
-//                        let idx = nodes[d.id].name.split('-').map(x => {
-//                            return isNaN(x) ? x : Number(x)}
-//                        );
-//                        for (let j = 0; j < idx.length; j++) {
-//                            data.push(originalData[idx[j]]);
-//                        }
-//                        let countData = countSAX(data, 4);
-//                        div.innerHTML += nodes[d.id].name + '</n>';
-//                        drawHeatmap("heatmap-node-" + d.id, data, countData, 4);
-//                    }
-//                }
-//            // return -380;
-//            return source.x - 1070
-//        })
-//        // this removes hover effect for the heatmaps
-//        .attr("pointer-events", "none");
-
-//        d3v4.selectAll('.heatmap-obj').append('text')
-//            .text(function(d) {
-//                if (d.name === 'Root1') {
-//                    return 1
-//                } else {
-//                    cluster_size = d.name.split('-').length
-//                    return cluster_size;
-//                }
-//            })
-//            .attr("x", function(d) {
-//                return 210
-//                // return d.children || d._children ? -10 : 10;
-//            })
-//            .attr("dy", "50")
-//            .attr('class', '')
-//            // .attr("text-anchor", function(d) {
-//            //     return d.children || d._children ? "end" : "start";
-//            // })
-//            .style("fill-opacity", 1);
-        // END: heatmap add to nodes
-
-
-
 
         // adds node labels as all cluster member's names separated by a '-'
         nodeEnter.append("text")
@@ -762,7 +710,6 @@ function drawTree(originalData) {
         heatmaps.transition()
             .duration(duration)
             .attr('transform', function(d) {
-                let heatmapHeight = d3v4.select('#heatmap-node-' + d.id).node().getBBox().height;
                 if (d.name.split('-').length > 1) {
                     return 'translate(' + (d.y + heatmapWidth * d.parent.depth + 30) + ',' + (d.x - heatmapHeight / 2 - 10) + ')';
                 } else {
@@ -787,21 +734,6 @@ function drawTree(originalData) {
 
         nodeExit.select("text")
             .style("fill-opacity", 0);
-
-
-        // Transition exiting heatmaps to the parent's new position.
-        let heatmapExit = heatmaps.exit().transition()
-            .duration(duration)
-            .attr("transform", function(d) {
-                return "translate(" + source.y + "," + source.x + ")";
-            })
-            .remove();
-        heatmapExit.select('rect')
-            .attr('width', 0)
-            .attr('height', 0);
-        heatmapExit.select('text')
-            .style("fill-opacity", 0);
-        heatmaps.exit().remove();
 
         // CUSTOM CODE FOR REMOVING NODES CIRCLES OF LEAVES
         // selected = node.selectAll(".node circle")
@@ -890,7 +822,7 @@ function drawTree(originalData) {
 
         function heatmap(d) {
 //        var selected = d3v4.select(this.parentNode).select(".nodeCircle")._groups[0][0]
-            if ($("svg.heatmap-node-" + d.id).length === 0 && d.name.split('-').length > 1) {
+//             if ($("svg.heatmap-node-" + d.id).length === 0 && d.name.split('-').length > 1) {
                 let div = document.getElementsByClassName(d.id);
 
                 let data = [];
@@ -911,7 +843,30 @@ function drawTree(originalData) {
                         drawHeatmap("heatmap-node-" + d.id, data, countData, 4);
                     }
                 }
-            }
+            // }
+        }
+        function appendHeatmap() {
+            heatmaps = svgGroup.selectAll('g.heatmap-obj')
+                .data(heatmapData)
+                .enter()
+                .append('g')
+                .attr('id', function (d) { return "heatmap-node-" + d.id; })
+                .attr('class', 'heatmap-obj')
+                .each(heatmap);
+        }
+
+        function updateHeatmap() {
+            heatmaps = svgGroup.selectAll('g.heatmap-obj')
+                .data(heatmapData)
+                .attr('id', function (d) { return "heatmap-node-" + d.id; })
+                .each(heatmap);
+        }
+
+        function removeHeatmap() {
+            d3v3.selectAll('g.heatmap-obj')
+                .data(heatmapData)
+                .exit()
+                .remove();
         }
     }
 

@@ -193,3 +193,6 @@ function legendDraw(){
 
 }
 
+$( document ).ready(function() {
+});
+

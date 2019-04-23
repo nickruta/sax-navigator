@@ -188,6 +188,13 @@ h2#header-hr-2 {
     height: 50vh;
 }
 
+#individual-view {
+    padding-top: 10px;
+    margin: 0 auto !important;
+    text-align: center;
+    height: 50vh;
+}
+
 th {
     text-align:center;
     font-weight:bold !important;

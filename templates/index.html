@@ -79,8 +79,8 @@
                 <ul class="nav flex-column mb-2">
                 <li class="nav-item">
                     <a class="nav-link">
-                Name / ID
-                </a>
+                        Name / ID
+                    </a>
                 </li>
                 <li class="nav-item">
                     <div class = 'dropdown nav-link'>
@@ -94,6 +94,22 @@
                         </div>
                     </div>
                 </li>
+                </ul>
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <span>Filtering</span>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link" id="current-cluster-size">
+                            Minimum cluster size
+                        </a>
+                    </li>
+                    <div class="input-group input-group-sm mb-3 px-3">
+                        <input type="text" class="form-control" placeholder="cluster size" aria-label="cluster size" aria-describedby="basic-addon2" id="filter-cluster-size-input">
+                        <div class="input-group-append">
+                            <button class="button-custom ml-1" type="button" id="filter-cluster-size-btn">Filter</button>
+                        </div>
+                    </div>
                 </ul>
             </div>
             <div class="col-md-3 d-none d-md-block">
@@ -177,7 +193,24 @@
           <div id="tree-container" ></div>
   </div>
     <div id="individual-view" class="column">
+        <ul class="nav flex-column mb-2" id="set-max-cluster-size">
+<!--            <li class="nav-item">-->
+<!--                -->
+<!--            </li>-->
+            <div class="input-group input-group-sm mb-3 px-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Max. Cluster Size Available for Display<a data-toggle="tooltip" class="tooltipLink" data-original-title="Tooltip text goes here">
+  <span class="glyphicon glyphicon-info-sign"></span>
+</a></span>
 
+
+                </div>
+                <input type="text" class="form-control" aria-label="cluster size" aria-describedby="basic-addon2" id="set-max-cluster-size-input">
+                <div class="input-group-append">
+                    <button class="button-custom ml-1" type="button" id="set-max-cluster-size-btn">Set</button>
+                </div>
+            </div>
+        </ul>
         <div id='cluster-display'></div>
         <div id="superposition"></div>
         <div id="sparklines"></div>
@@ -229,11 +262,17 @@
 
 
 
+
+
 </script> -->
+
+
+
     <script src="{{ url_for('static', filename='resources/jquery/queue.v1.min.js') }}"></script>
     <link rel='stylesheet' href="{{ url_for('static', filename='resources/css/font-awesome.min.css') }}" >
 
 <script src="{{ url_for('static', filename='resources/jquery/jquery-3.3.1.slim.min.js') }}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
       <script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="{{ url_for('static', filename='resources/bootstrap-4.3.1/dist/js/bootstrap.bundle.min.js') }}" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
