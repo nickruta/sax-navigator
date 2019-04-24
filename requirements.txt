@@ -2,3 +2,4 @@ flask
 pandas
 gunicorn
 django-heroku
+flask_cors

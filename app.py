@@ -4,6 +4,7 @@ import json
 from flask import Flask, render_template
 import pandas as pd
 from flask import jsonify
+from flask_cors import CORS, cross_origin
 
 # from scipy.cluster.hierarchy import dendrogram, linkage
 # import matplotlib.pyplot as plt
@@ -63,6 +64,7 @@ fnames_astronomy = [f for f in listdir(ts_astronomy_directory) if isfile(join(ts
 fnames_atp = [f for f in listdir(ts_atp_directory) if isfile(join(ts_atp_directory, f))]
 
 @app.route('/get_ts_fnames', methods=['GET'])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def get_ts_fnames():
 	return jsonify({'fnames_astronomy': fnames_astronomy, 'fnames_atp': fnames_atp})
 
