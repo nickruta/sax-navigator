@@ -74,28 +74,6 @@
 <!--            SEARCH TOOLS-->
             <div class="col-md-2 d-none d-md-block">
                 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                <span>Search</span>
-                </h6>
-                <ul class="nav flex-column mb-2">
-                <li class="nav-item">
-                    <a class="nav-link">
-                        Name / ID
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <div class = 'dropdown nav-link'>
-                        <button class="button-custom dropdown-toggle "
-                                type="button"
-                                id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Select
-                        </button>
-                        <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton" id="drop-search">
-                        </div>
-                    </div>
-                </li>
-                </ul>
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                     <span>Filtering</span>
                 </h6>
                 <ul class="nav flex-column mb-2">
@@ -103,6 +81,9 @@
                         <a class="nav-link" id="current-cluster-size">
                             Minimum cluster size
                         </a>
+                        <p class="nav-descript">
+                            Trim branches of the tree so nodes only hold clusters of the minimum cluster size.
+                        </p>
                     </li>
                     <div class="input-group input-group-sm mb-3 px-3">
                         <input type="text" class="form-control" placeholder="cluster size" aria-label="cluster size" aria-describedby="basic-addon2" id="filter-cluster-size-input">
@@ -114,10 +95,27 @@
             </div>
             <div class="col-md-3 d-none d-md-block">
                 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                    <br>
-                    <a class="d-flex align-items-center text-muted" >
-                    </a>
+                    <span>Search</span>
                 </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            Name / ID
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <div class = 'dropdown nav-link'>
+                            <button class="button-custom dropdown-toggle "
+                                    type="button"
+                                    id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select
+                            </button>
+                            <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButton" id="drop-search">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
                         <a class="nav-link">
