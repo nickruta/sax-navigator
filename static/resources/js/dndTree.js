@@ -147,10 +147,13 @@ function drawTree(originalData) {
     // Define the zoom function for the zoomable tree
 
     function zoom() {
-        let props = $('.treeGroup').css('transform');
-        let vals = props.split('(')[1];
-        vals = vals.split(')')[0];
-        vals = vals.split(',');
+
+      // START: FIREFOX BROWSER BUG FIX: I COMMENTED THIS BLOCK OUT FOR NOW TO FIX IT
+        // let props = $('.treeGroup').css('transform');
+        // let vals = props.split('(')[1];
+        // vals = vals.split(')')[0];
+        // vals = vals.split(',');
+        // END: FIREFOX BROWSER BUG FIX
         svgGroup.attr("transform", "translate(" + (d3v3.event.translate[0] + origin.x) + ',' + (d3v3.event.translate[1] + origin.y) + ") scale(" + (initScale * d3v3.event.scale) + ")");
     }
 
