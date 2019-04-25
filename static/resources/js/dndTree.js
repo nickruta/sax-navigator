@@ -557,12 +557,28 @@ function drawTree(originalData) {
             // Normalize for fixed-depth by commenting out below line
             d.y = (d.depth * 200); //500px per level.
         });
+        // let props = $('.treeGroup').css('transform'); 
         let props = $('.treeGroup').css('transform'); 
-        let vals = props.split('(')[1];
-        vals = vals.split(')')[0];
-        vals = vals.split(',');
-        origin.x = Number(vals[vals.length - 2]);
-        origin.y = Number(vals[vals.length - 1]);
+
+
+        // START: FIREFOX BROWSER BUG FIX
+        // I commented this out to replace it with the below bug fix for firefox browsers
+        // to pick up the transform values
+
+        // let vals = props.split('(')[1];
+        // vals = vals.split(')')[0];
+        // vals = vals.split(',');
+        // origin.x = Number(vals[vals.length - 2]);
+        // origin.y = Number(vals[vals.length - 1]);
+
+        // I hope this works as a bug fix for firefox browser pick up 
+        // the transform values instead of the above two lines
+        origin.x = $('.treeGroup')[0].transform.animVal[0].matrix.e
+        origin.y = $('.treeGroup')[0].transform.animVal[0].matrix.f
+        // END: FIREFOX BROWSER BUG FIX
+
+
+        console.log(origin.x + " " + origin.y)
         // Update the nodes…
         node = svgGroup.selectAll("g.node")
             .data(nodes, function(d) {
