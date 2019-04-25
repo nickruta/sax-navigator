@@ -580,8 +580,6 @@ function drawTree(originalData) {
         origin.y = $('.treeGroup')[0].transform.animVal[0].matrix.f
         // END: FIREFOX BROWSER BUG FIX
 
-
-        console.log(origin.x + " " + origin.y)
         // Update the nodes…
         node = svgGroup.selectAll("g.node")
             .data(nodes, function(d) {
