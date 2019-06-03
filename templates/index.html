@@ -188,7 +188,9 @@
 <div class="'main-container">
 <div class="container-fluid column" id="main-collapse">
 
-          <div id="tree-container" ></div>
+          <div id="tree-container" >
+            <button id="heatmap-comp-btn" type="button" class="button-custom" title="Compare 2 Clusters" data-toggle="popover" data-placement="bottom" data-html="true" data-content="place heatmaps here">Compare</button>
+          </div>
   </div>
     <div id="individual-view" class="column">
         <ul class="nav flex-column mb-2" id="set-max-cluster-size">
@@ -197,9 +199,11 @@
 <!--            </li>-->
             <div class="input-group input-group-sm mb-3 px-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Max. Cluster Size Available for Display<a data-toggle="tooltip" class="tooltipLink" data-original-title="Tooltip text goes here">
-  <span class="glyphicon glyphicon-info-sign"></span>
-</a></span>
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Max. Cluster Size Available for Display
+                        <a data-toggle="tooltip" class="tooltipLink" data-original-title="Tooltip text goes here">
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                        </a>
+                    </span>
 
 
                 </div>
@@ -298,5 +302,6 @@
         <!-- <script src="dashboard.js"></script></body> -->
     <script type="text/javascript" src="{{url_for('static',filename='resources/js/dropDown.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static',filename='resources/js/gridSearch.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static',filename='resources/bootstrap-4.3.1/dist/js/bootstrap.bundle.min.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static',filename='resources/js/main.js')}}"></script>
 </html>

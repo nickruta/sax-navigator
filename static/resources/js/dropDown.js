@@ -33,7 +33,6 @@ dropdown.prototype.createMenu = function() {
 
     // on click export tree ID to global variable
     $('.dropdown-menu a').click(function(e){
-
         //prevent default link behavior
         $('#dropdownMenuButton').text($(this).text());
         e.preventDefault();

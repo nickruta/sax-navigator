@@ -31,6 +31,10 @@ let line_ML = d3v4.line()
     .x(function(d) { return xScale_ML(d.x) })
     .y(function(d) { return yScale_ML(d.y) });
 
+d3v4.selection.prototype.moveToFront =
+    function() {
+        return this.each(function(){this.parentNode.appendChild(this);});
+    };
 
 d3v4.csv("static/resources/data/metadata/ts_astronomy_metadata2.csv", function(data) {
     let mdata = {};
@@ -198,6 +202,10 @@ function showIndividualView(d, filename, id) {
                 .style('border', '1px solid #ddd');
             d3v4.selectAll('tr.metadataTable.' + 'id' + selectedID)
                 .style('border', '2px solid #DAA520');
+
+            // highlight the clicked row's time series on the line graph
+            let selectedID_2 = this.parentNode.getAttribute('class').split(' ')[0];
+            clickHightlightMultiLineChart(selectedID_2)
         }
 
         function mouseoverRow(d) {
@@ -306,10 +314,25 @@ function showIndividualView(d, filename, id) {
                 .style("stroke-width", lineStroke)
                 .style('stroke', '#888');
             d3v4.select('path.' + id)
+                .moveToFront()
                 .style('opacity', '1')
                 .style("stroke-width", lineStrokeHover)
                 .style("cursor", "pointer")
                 .style('stroke', 'steelblue');
+        }
+        function clickHightlightMultiLineChart(id) {
+            d3v4.selectAll('.clickHighlighted')
+                .style('opacity', '0.3')
+                .style("stroke-width", lineStroke)
+                .style('stroke', '#888')
+                .classed("clickHighlighted", false);
+            d3v4.select('path.' + id)
+                .moveToFront()
+                .attr("class", "clickHighlighted")
+                .style('opacity', '1')
+                .style("stroke-width", lineStrokeHover)
+                .style("cursor", "pointer")
+                .style('stroke', '#fcb315');
         }
     });
 }

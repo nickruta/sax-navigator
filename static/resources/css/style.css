@@ -186,6 +186,7 @@ h2#header-hr-2 {
   margin: 0 auto !important;
   text-align: center;
     height: 50vh;
+  position: relative;
 }
 
 #individual-view {
@@ -293,4 +294,20 @@ td {
 }
 
 #cluster-legend {
+}
+
+#heatmap-comp-btn {
+  float: left;
+  position: absolute;
+  left: 10px;
+  /*top: 20px;*/
+}
+
+.popover{
+    max-width: 100% !important;
+}
+
+.popover-header {
+    color: #6c757d;
+    /*font-size: .75rem !important;*/
 }
