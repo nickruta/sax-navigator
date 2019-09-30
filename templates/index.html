@@ -65,8 +65,6 @@
                         The search features allows you to locate an individual observation via its name/id or allow
                         you to find specific patterns created by clicking on the grid.
 
-                        <br><br><strong id='size-notice'>Please note that this site is currently optimized to be viewed on screen sizes of 15 inches or more.</strong><br>
-
                     <span class="sr-only">(current)</span>
                     </a>
                     </li>
@@ -275,13 +273,10 @@
     <script src="{{ url_for('static', filename='resources/jquery/queue.v1.min.js') }}"></script>
     <link rel='stylesheet' href="{{ url_for('static', filename='resources/css/font-awesome.min.css') }}" >
 
-    <script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="{{ url_for('static', filename='resources/bootstrap-4.3.1/dist/js/bootstrap.bundle.min.js') }}" ></script>
+<script src="{{ url_for('static', filename='resources/jquery/jquery-3.3.1.slim.min.js') }}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
-    <script type="text/javascript" src="{{url_for('static',filename='resources/bootstrap-4.3.1/dist/js/bootstrap.bundle.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='resources/jquery/jquery-3.3.1.slim.min.js') }}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-
-
+      <script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="{{ url_for('static', filename='resources/bootstrap-4.3.1/dist/js/bootstrap.bundle.min.js') }}" ></script>
 
 
 
@@ -307,6 +302,6 @@
         <!-- <script src="dashboard.js"></script></body> -->
     <script type="text/javascript" src="{{url_for('static',filename='resources/js/dropDown.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static',filename='resources/js/gridSearch.js')}}"></script>
-    
+    <script type="text/javascript" src="{{url_for('static',filename='resources/bootstrap-4.3.1/dist/js/bootstrap.bundle.min.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static',filename='resources/js/main.js')}}"></script>
 </html>
